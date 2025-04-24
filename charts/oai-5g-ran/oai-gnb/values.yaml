@@ -98,6 +98,15 @@ config:
   n2IfName: "@GNB_N2_IF_NAME@" # n2 or eth0 if no multus
   n3IfName: "@GNB_N3_IF_NAME@" # n3 or eth0 if no multus
 
+
+## Monitoring section
+includeMetricsParser: @METRICS_PARSER_CONTAINER@ #If true it will add a prometheus metrics parser container inside the gnb pod for monitoring
+
+metricsParserImage:
+  repository: ghcr.io/ziyad-mabrouk/oai-gnb-metrics-parser
+  version: latest
+  pullPolicy: IfNotPresent
+
 ## Debugging section
 start:
   gnb: true #If false the network function container will run in sleep mode for manually testing

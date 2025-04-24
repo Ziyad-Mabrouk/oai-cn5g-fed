@@ -49,6 +49,7 @@ Selector labels
 {{- define "oai-gnb.selectorLabels" -}}
 app.kubernetes.io/name: {{ include "oai-gnb.name" . }}
 app.kubernetes.io/instance: {{ .Release.Name }}
+nf: gnb # used to target the gnb pod when monitoring
 {{- end -}}
 
 {{/*
