@@ -6,7 +6,7 @@ nfimage:   # image name either locally present or in a public/private repository
   repository:  @GNB_REPO@
   version:  @GNB_TAG@ # image tag or develop
   # pullPolicy: IfNotPresent or Never or Always
-  pullPolicy: IfNotPresent
+  pullPolicy: @GNB_PULL_POLICY@
 
 # good to use when pulling images from docker-hub mention 
 imagePullSecrets:
