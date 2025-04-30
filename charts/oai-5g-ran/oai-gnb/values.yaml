@@ -105,7 +105,7 @@ includeMetricsParser: @METRICS_PARSER_CONTAINER@ #If true it will add a promethe
 metricsParserImage:
   repository: ghcr.io/ziyad-mabrouk/oai-gnb-metrics-parser
   version: latest
-  pullPolicy: IfNotPresent
+  pullPolicy: Always
 
 ## Debugging section
 start:
