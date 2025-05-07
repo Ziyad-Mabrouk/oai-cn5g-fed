@@ -125,6 +125,13 @@ spec:
         {{- end}}
         - name: configuration
           subPath: gnb.conf
+        {{- if .Values.includeFlexRIC }}
+        - name: conf-flexric
+            mountPath: /usr/local/etc/flexric/flexric.conf
+            subPath: flexric.conf
+        - name: shared-volume
+            mountPath: /usr/local/lib/flexric/
+        {{- end}}
         {{- if eq .Values.config.usrp "aw2s" }}
           mountPath: /opt/oai-gnb-aw2s/etc/gnb.conf
         {{- else }}
@@ -155,6 +162,10 @@ spec:
         args:
          -  AMF_IP_ADDRESS=$(getent hosts $AMF_HOST | awk '{print $1}');
             AMF_IP_ADDRESS=$(if [[ $AMF_IP_ADDRESS ]]; then echo $AMF_IP_ADDRESS; else echo $AMF_HOST;fi)
+          {{- if .Values.includeFlexRIC }}
+            FLEXRIC_IP=$(getent hosts $FLEXRIC_HOST | awk '{print $1}');
+            FLEXRIC_IP=$(if [[ $FLEXRIC_IP ]]; then echo $FLEXRIC_IP; else echo $FLEXRIC_HOST;fi);
+          {{- end}}
             N2_IP_ADDRESS=$(ip -4 addr show $N2_IF_NAME | grep inet | awk '{ print $2 }' | cut -d/ -f1);
             N3_IP_ADDRESS=$(ip -4 addr show $N3_IF_NAME | grep inet | awk '{ print $2 }' | cut -d/ -f1);
             RU1_IP_ADDRESS=$(ip -4 addr show ru1 | grep inet | awk '{ print $2 }' | cut -d/ -f1);
@@ -162,6 +173,9 @@ spec:
                 -e s/@GNB_N2_IP_ADDRESS@/$N2_IP_ADDRESS/g
                 -e s/@GNB_N3_IP_ADDRESS@/$N3_IP_ADDRESS/g
                 -e s/@RU1_IP_ADDRESS@/$RU1_IP_ADDRESS/g
+              {{- if .Values.includeFlexRIC }}
+                -e s/@FLEXRIC_IP@/$FLEXRIC_IP/g
+              {{- end}}
             {{- if eq .Values.config.usrp "aw2s" }}
                 /opt/oai-gnb-aw2s/etc/gnb.conf | tee /tmp/gnb.conf;
             {{- else }}
@@ -198,6 +212,8 @@ spec:
             value: {{ .Values.config.useAdditionalOptions }}
           - name: AMF_HOST
             value: {{ .Values.config.amfHost }}
+          - name: FLEXRIC_HOST
+            value: {{ .Values.config.flexrichost }}
           - name: N2_IF_NAME
             value: {{ .Values.config.n2IfName }}
           - name: N3_IF_NAME
@@ -262,6 +278,14 @@ spec:
       - configMap:
           name: {{ .Chart.Name }}-configmap
         name: configuration
+      {{- if .Values.includeFlexRIC }} 
+      - configMap:
+          name: conf-flexric
+        name: conf-flexric
+      - name: shared-volume
+        hostPath:
+          path: /mnt/flexric/
+      {{- end }}
       {{- if eq .Values.config.usrp "b2xx"}}
       - name: usrp
         hostPath:
