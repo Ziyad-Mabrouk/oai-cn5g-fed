@@ -34,11 +34,11 @@ spec:
                 fieldRef:
                   fieldPath: status.podIP
           volumeMounts:
-          - name: conf-flexric
+          - name: configuration
             mountPath: /usr/local/etc/flexric/flexric.conf
             subPath: flexric.conf
       volumes:
       - configMap:
-          name: conf-flexric
+          name: {{ .Chart.Name }}-configmap
         name: configuration
       restartPolicy: {{ .Values.restartPolicy }}
