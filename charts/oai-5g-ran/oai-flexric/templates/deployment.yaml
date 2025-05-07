@@ -26,6 +26,8 @@ spec:
           command: [ "/bin/bash", "-c" ]
           args: 
             - |
+              mkdir /usr/local/etc/flexric/
+              cp /configuration/flexric.conf /usr/local/etc/flexric/flexric.conf
               sed -i "s/NEAR_RIC_IP = .*/NEAR_RIC_IP = $POD_IP /" /usr/local/etc/flexric/flexric.conf # Replace NEAR_RIC_IP in flexric.conf with POD_IP
               exec stdbuf -o0  /flexric/build/examples/ric/nearRT-RIC # Execute the nearRT-RIC example
           env:
@@ -35,7 +37,7 @@ spec:
                   fieldPath: status.podIP
           volumeMounts:
           - name: configuration
-            mountPath: /usr/local/etc/flexric/flexric.conf
+            mountPath: /configuration/flexric.conf
             subPath: flexric.conf
       volumes:
       - configMap:
