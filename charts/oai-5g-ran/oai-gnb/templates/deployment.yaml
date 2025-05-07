@@ -125,13 +125,6 @@ spec:
         {{- end}}
         - name: configuration
           subPath: gnb.conf
-        {{- if .Values.includeFlexRIC }}
-        - name: conf-flexric
-            mountPath: /usr/local/etc/flexric/flexric.conf
-            subPath: flexric.conf
-        - name: shared-volume
-            mountPath: /usr/local/lib/flexric/
-        {{- end}}
         {{- if eq .Values.config.usrp "aw2s" }}
           mountPath: /opt/oai-gnb-aw2s/etc/gnb.conf
         {{- else }}
@@ -278,14 +271,6 @@ spec:
       - configMap:
           name: {{ .Chart.Name }}-configmap
         name: configuration
-      {{- if .Values.includeFlexRIC }} 
-      - configMap:
-          name: conf-flexric
-        name: conf-flexric
-      - name: shared-volume
-        hostPath:
-          path: /mnt/flexric/
-      {{- end }}
       {{- if eq .Values.config.usrp "b2xx"}}
       - name: usrp
         hostPath:

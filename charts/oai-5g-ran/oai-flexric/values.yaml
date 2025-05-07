@@ -26,10 +26,6 @@ service:
       port: 36422
       targetPort: 36422
       protocol: SCTP
-
-volume: # Specify the shared volume path 
-  sharedVolume: 
-    path: /mnt/flexric/
   
 restartPolicy: Always
 nodeSelector: {}

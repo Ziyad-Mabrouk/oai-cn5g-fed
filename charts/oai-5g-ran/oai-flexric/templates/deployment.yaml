@@ -35,10 +35,11 @@ spec:
                 fieldRef:
                   fieldPath: status.podIP
           volumeMounts:
-            - name: shared-volume
-              mountPath: {{ .Values.volume.sharedVolume.path }}
+          - name: conf-flexric
+            mountPath: /usr/local/etc/flexric/flexric.conf
+            subPath: flexric.conf
       volumes:
-        - name: shared-volume
-          hostPath:
-            path: {{ .Values.volume.sharedVolume.path }}
+      - configMap:
+          name: conf-flexric
+        name: configuration
       restartPolicy: {{ .Values.restartPolicy }}
