@@ -263,12 +263,3 @@ data:
         rrc_log_level                         ="info";
         f1ap_log_level                         ="debug";
       };
-
-    {{- if .Values.includeFlexRIC }}
-    e2_agent :
-      {
-        near_ric_ip_addr = "@FLEXRIC_IP@";
-        #sm_dir = "/path/where/the/SMs/are/located/"
-        sm_dir = "/usr/local/lib/flexric/";
-      };
-    {{- end}}
